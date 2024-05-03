@@ -20,7 +20,7 @@ def get_plan(origin, desti, num_peo, num_days):
         messages=[
             {
                 "role": "user",
-                "content": f"You are my itinerary planner. I will give you the details and give me the best possible itinerary for each day. Here are the details 1. Strating city: {origin} 2. Destination: {desti} 3. Number of People: {num_peo} 4. Number of Days: {num_days}. Make sure it's less than 600 characters in length (very important). Make it very simple",
+                "content": f"You are my itinerary planner. I will give you the details and give me the best possible itinerary for each day. Here are the details 1. Strating city: {origin} 2. Destination: {desti} 3. Number of People: {num_peo} 4. Number of Days: {num_days}. Make sure it's less than 2000 characters in length (very important). Make it very simple",
             }
         ],
         model="mixtral-8x7b-32768",
