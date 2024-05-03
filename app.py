@@ -5,6 +5,8 @@ import shutil
 import json
 from plan import get_plan
 from image_search import get_image
+from search import get_searchh
+
 
 app = Flask(__name__)
 
@@ -34,6 +36,14 @@ def get_places_img():
     l = get_image(place_names.split(","))
 
     return jsonify({"images": l})
+
+
+@app.route("/search", methods=["POST"])
+def get_search():
+    city = request.form.get("city")
+    c_l = get_searchh(city)
+
+    return jsonify({"linkss": c_l})
 
 
 if __name__ == "__main__":

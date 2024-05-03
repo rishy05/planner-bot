@@ -4,6 +4,7 @@ import discord
 import requests
 import shutil
 from dotenv import load_dotenv
+import json
 
 load_dotenv()
 from pprint import pprint
@@ -34,6 +35,7 @@ async def helpp(ctx):
 # http://127.0.0.1:8080
 @client.command()
 async def add(ctx):
+    travel = {}
     await ctx.message.channel.send("Hold on our AI is generating an itineray for you.")
     use = ctx.message.content.split()
     print(use)
@@ -44,15 +46,32 @@ async def add(ctx):
     info = {"origin": use[2], "desti": use[3], "num_peo": use[4], "num_days": use[5]}
 
     res = requests.post("http://127.0.0.1:8080/plan", data=info)
-    print(res.json()["message"])
-    await ctx.channel.send(res.json()["message"])
+    msgg = res.json()["message"]
+
+    await ctx.channel.send(msgg)
     pl = {"place": res.json()["places"]}
     pprint(res.json()["places"])
     imgg = requests.post("http://127.0.0.1:8080/places", data=pl)
-    pprint(imgg.json()["images"])
-
-    for linkk in imgg.json()["images"]:
+    i_l = imgg.json()["images"]
+    for linkk in i_l:
         await ctx.channel.send(linkk)
+    d_s = {"city": use[3]}
+    searchh = requests.post("http://127.0.0.1:8080/search", data=d_s)
+    ss = searchh.json()["linkss"]
+    await ctx.channel.send("Here are some additional links for your reference.")
+    for ii in ss:
+        await ctx.channel.send(ii)
+    ff = open(f"task.json", "w")
+
+    travel["itinerary"] = msgg
+    travel["places_mentioned"] = pl
+    travel["images"] = i_l
+    travel["additional_links"] = ss
+
+    ff.write(json.dumps(travel))
+    ff.close()
+
+    await ctx.channel.send(file=discord.File("task.json"))
 
 
 client.run(token)
