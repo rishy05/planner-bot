@@ -1,10 +1,15 @@
 import requests
 from pprint import pprint
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 API_URL = (
     "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2"
 )
-headers = {"Authorization": "Bearer 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"}
+headers = {"Authorization": f"Bearer {os.getenv("API_HUGGING")}"}
 
 
 def query(payload):
